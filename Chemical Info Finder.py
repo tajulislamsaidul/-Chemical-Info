@@ -12,7 +12,6 @@ def search():
     if not query:
         messagebox.showwarning("Input Required", "Please enter a query.")
         return
-
     try:
         compounds = pcp.get_compounds(query, search_type)
         if not compounds:
@@ -41,7 +40,6 @@ CID:              {compound.cid}
             img_data = Image.open(BytesIO(response.content))
             img_data = img_data.resize((200, 200))
             img_tk = ImageTk.PhotoImage(img_data)
-
             image_label.config(image=img_tk, text='')
             image_label.image = img_tk
         else:
@@ -55,7 +53,6 @@ CID:              {compound.cid}
 
 root = tk.Tk()
 root.title("Chemical Info Finder")
-
 tk.Label(root, text="Enter Search Term:").pack()
 entry = tk.Entry(root, width=40)
 entry.pack()
@@ -68,14 +65,11 @@ frame.pack()
 
 output_text = tk.Text(frame, width=60, height=10, state='disabled', wrap='word')
 output_text.pack(side=tk.LEFT)
-
 scroll = tk.Scrollbar(frame, command=output_text.yview)
 scroll.pack(side=tk.RIGHT, fill=tk.Y)
-
 output_text.config(yscrollcommand=scroll.set)
-
 image_label = tk.Label(root, text='[No structure shown]', font=('Arial', 12), pady=10)
 image_label.pack()
-
 entry.bind("<Return>", lambda event: search())
+
 root.mainloop()
