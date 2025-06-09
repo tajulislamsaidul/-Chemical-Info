@@ -29,17 +29,14 @@ Formula:          {compound.molecular_formula}
 CID:              {compound.cid}
         """.strip()
 
-        # Update text output
         output_text.config(state='normal')
         output_text.delete(1.0, tk.END)
         output_text.insert(tk.END, result)
         output_text.config(state='disabled')
 
-        # Attempt to download structure image from PubChem
         img_url = f"https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/{compound.cid}/PNG"
         response = requests.get(img_url)
 
-        # Show image only if response is valid and not too small (to avoid blank images)
         if response.ok and response.headers['Content-Type'] == 'image/png' and len(response.content) > 1000:
             img_data = Image.open(BytesIO(response.content))
             img_data = img_data.resize((200, 200))
@@ -48,7 +45,6 @@ CID:              {compound.cid}
             image_label.config(image=img_tk, text='')
             image_label.image = img_tk
         else:
-            # Clear image and show fallback message
             image_label.config(image='', text='[No structure available]')
             image_label.image = None
 
@@ -57,23 +53,16 @@ CID:              {compound.cid}
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
-# GUI Setup
 root = tk.Tk()
 root.title("Chemical Info Finder")
 
 tk.Label(root, text="Enter Search Term:").pack()
 entry = tk.Entry(root, width=40)
 entry.pack()
-
-# Search type dropdown
 search_option = tk.StringVar(value='name')
 options = ['name', 'formula', 'cid', 'smiles']
 tk.OptionMenu(root, search_option, *options).pack(pady=5)
-
-# Search button
 tk.Button(root, text="Search", command=search).pack(pady=5)
-
-# Text output and scrollbar
 frame = tk.Frame(root)
 frame.pack()
 
@@ -85,11 +74,8 @@ scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
 output_text.config(yscrollcommand=scroll.set)
 
-# Image display label
 image_label = tk.Label(root, text='[No structure shown]', font=('Arial', 12), pady=10)
 image_label.pack()
 
-# Allow pressing Enter to search
 entry.bind("<Return>", lambda event: search())
-
 root.mainloop()
