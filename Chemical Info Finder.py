@@ -50,7 +50,7 @@ CID:              {compound.cid}
         messagebox.showerror("Not Found", f"No data found for '{query}' using {search_type}")
     except Exception as e:
         messagebox.showerror("Error", str(e))
-
+        
 root = tk.Tk()
 root.title("Chemical Info Finder")
 tk.Label(root, text="Enter Search Term:").pack()
